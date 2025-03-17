@@ -1,0 +1,6 @@
+@CodeQLTest_HostAddress = http://localhost:5059
+
+GET {{CodeQLTest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
