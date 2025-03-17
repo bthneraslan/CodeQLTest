@@ -31,8 +31,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build the project
-        run: dotnet build --configuration Release --no-restore
+      - name: Build the solution
+        run: dotnet build --configuration Release --no-restore --output ./build
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -42,4 +42,5 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-        continue-on-error: false
+        with:
+          category: "/language:csharp"
