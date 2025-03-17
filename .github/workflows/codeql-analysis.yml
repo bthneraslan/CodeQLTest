@@ -1,0 +1,43 @@
+name: "CodeQL Analysis for .NET 8"
+
+on:
+  workflow_dispatch:  # Manuel tetikleme için ekliyoruz
+  push:
+    branches:
+      - main  # Ana dalda değişiklik yapıldığında tetiklenir
+  pull_request:
+    branches:
+      - main  # Ana dalda PR açıldığında tetiklenir
+
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Repo dosyalarını çek
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'  # .NET 8 kullanıyoruz
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'csharp'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
